@@ -1,16 +1,45 @@
 # Standard Library
-from collections import deque
+from collections import defaultdict, deque
+from datetime import datetime
 from enum import Enum
 import random
 
+from pprint import pprint
+
 # Discord / Red Bot
 from discord.ext import commands
+from cogs.utils.dataIO import dataIO
 
 NUM_ENC = "\N{COMBINING ENCLOSING KEYCAP}"
 
 default_settings = {"PAYDAY_TIME": 300, "PAYDAY_CREDITS": 120,
                     "SLOT_MIN": 5, "SLOT_MAX": 100, "SLOT_TIME": 0,
                     "REGISTER_CREDITS": 0}
+
+
+class EconomyError(Exception):
+    pass
+
+
+class OnCooldown(EconomyError):
+    pass
+
+
+class InvalidBid(EconomyError):
+    pass
+
+
+class BankError(Exception):
+    pass
+
+
+class NoAccount(BankError):
+    pass
+
+
+class InsufficientBalance(BankError):
+    pass
+
 
 class SMReel(Enum):
     cherries  = "\N{CHERRIES}"
@@ -55,11 +84,11 @@ PAYOUTS = {
     },
 }
 
-SLOT_PAYOUTS_MSG = ("Slot machine payouts:\n"
-                    "{two.value} {two.value} {six.value} Bet * 100\n"
-                    "{flc.value} {flc.value} {flc.value} Bet * 10\n"
-                    "{cherries.value} {cherries.value} {cherries.value} Bet * 8\n"
-                    "{two.value} {six.value} Bet * 4\n"
+SLOT_PAYOUTS_MSG = ("Slot machine payouts:\n\n"
+                    "{two.value} {two.value} {six.value} Bet * 100\n\n"
+                    "{flc.value} {flc.value} {flc.value} Bet * 10\n\n"
+                    "{cherries.value} {cherries.value} {cherries.value} Bet * 8\n\n"
+                    "{two.value} {six.value} Bet * 4\n\n"
                     "{cherries.value} {cherries.value} Bet * 3\n\n"
                     "Three symbols: Bet * 6\n"
                     "Two symbols: Bet * 2".format(**SMReel.__dict__))
@@ -72,7 +101,8 @@ class SlotMachine:
     def __init__(self, bot):
         global default_settings
         self.bot = bot
-        self.bank = Bank(bot, "data/economy/bank.json")
+        econ = self.bot.get_cog('Economy')
+        self.bank = econ.bank
         self.file_path = "data/economy/settings.json"
         self.settings = dataIO.load_json(self.file_path)
         if "PAYDAY_TIME" in self.settings:  # old format
@@ -88,6 +118,14 @@ class SlotMachine:
 
     @commands.command(pass_context=True, no_pm=True)
     async def pull(self, ctx, bid: int):
+        """Reload slot settings"""
+        global default_settings
+        self.settings = dataIO.load_json(self.file_path)
+        if "PAYDAY_TIME" in self.settings:  # old format
+            default_settings = self.settings
+            self.settings = {}
+        self.settings = defaultdict(default_settings.copy, self.settings)
+
         """Play the slot machine"""
         author = ctx.message.author
         server = author.server
@@ -97,6 +135,8 @@ class SlotMachine:
         last_slot = self.slot_register.get(author.id)
         now = datetime.utcnow()
         try:
+            if not self.bank.account_exists(author):
+                raise NoAccount
             if last_slot:
                 if (now - last_slot).seconds < slot_time:
                     raise OnCooldown()
