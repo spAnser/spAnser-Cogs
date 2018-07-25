@@ -79,7 +79,6 @@ class SlotMachine:
             default_settings = self.settings
             self.settings = {}
         self.settings = defaultdict(default_settings.copy, self.settings)
-        self.payday_register = defaultdict(dict)
         self.slot_register = defaultdict(dict)
 
     @commands.command()
@@ -170,3 +169,6 @@ class SlotMachine:
             now = then - bid
             await self.bot.say("{}\n{} Nothing!\nYour bid: {}\n{} → {}!"
                                "".format(slot, author.mention, bid, then, now))
+
+def setup(bot):
+    bot.add_cog(SlotMachine(bot))
