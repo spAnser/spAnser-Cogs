@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "spAnser",
-    "INSTALL_MSG" : "Thank you for installing the Jumper Cogs Repo! These cogs are in constant development. Please update regularly to get the latest additions.If you wish to contribute or post an issue please do so on my github:\nhttps://github.com/spAnser/spAnser-Cogs",
+    "INSTALL_MSG" : "Thank you for installing the spAnser Cogs Repo! These cogs are in constant development. Please update regularly to get the latest additions.If you wish to contribute or post an issue please do so on my github:\nhttps://github.com/spAnser/spAnser-Cogs",
     "NAME" : "spAnser Cogs",
     "SHORT" : "Simple Cogs by spAnser",
     "DESCRIPTION" : "Various replacement / small cogs"
