@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "spAnser",
+    "NAME" : "Daily",
+    "SHORT" : "A way to restrict users to a single daily post.",
+    "DESCRIPTION" : "A way to restrict users to a single daily post.",
+    "TAGS" : ["slowmode", "admin"],
+    "REQUIREMENTS" : [],
+    "HIDDEN" : false
+}

@@ -126,7 +126,7 @@ class Daily:
 
     @daily.command(pass_context=True)
     async def mute(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
-        """Mute member from channels daily reset."""
+        """Member will be muted indefinately."""
         server = ctx.message.server
         if self.settings[server.id]:
             if channel.id in self.settings[server.id]:
@@ -141,7 +141,7 @@ class Daily:
 
     @daily.command(pass_context=True)
     async def unmute(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
-        """Un-Mute member from channels daily reset."""
+        """Member will be able to chat again at the daily reset."""
         server = ctx.message.server
         if self.settings[server.id]:
             if channel.id in self.settings[server.id]:
@@ -153,7 +153,7 @@ class Daily:
 
     @daily.command(pass_context=True)
     async def ignore(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
-        """Ignore member from channels daily reset."""
+        """Member will be able to talk without being restricted."""
         server = ctx.message.server
         if self.settings[server.id]:
             if channel.id in self.settings[server.id]:
@@ -168,7 +168,7 @@ class Daily:
 
     @daily.command(pass_context=True)
     async def unignore(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
-        """Un-Ignore member from channels daily reset."""
+        """Member will be removed from the un-restricted list."""
         server = ctx.message.server
         if self.settings[server.id]:
             if channel.id in self.settings[server.id]:
