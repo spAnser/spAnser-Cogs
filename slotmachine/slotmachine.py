@@ -4,8 +4,6 @@ from datetime import datetime
 from enum import Enum
 import random
 
-from pprint import pprint
-
 # Discord / Red Bot
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
