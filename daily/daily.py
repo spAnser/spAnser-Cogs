@@ -79,7 +79,7 @@ class Daily:
                         for member_perm in member_overwrites:
                             member = member_perm[0]
                             perms = member_perm[1]
-                            if 'muted' in settings and member.id in settings.muted:
+                            if 'muted' in settings and member.id in settings['muted']:
                                 pass
                             else:
                                 perms.send_messages = None
@@ -87,8 +87,6 @@ class Daily:
                                     await self.bot.delete_channel_permissions(channel, member)
                                 else:
                                     await self.bot.edit_channel_permissions(channel, member, perms)
-                            
-
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)
