@@ -105,7 +105,7 @@ class Daily:
             await self.bot.say(msg)
 
     @daily.command(pass_context=True)
-    async def add(self, ctx, channel: discord.Channel=None):
+    async def add(self, ctx, channel: discord.Channel):
         """Add channel to daily reset."""
         server = ctx.message.server
         if not self.settings[server.id]:
@@ -116,7 +116,7 @@ class Daily:
             dataIO.save_json(self.file_path, self.settings)
 
     @daily.command(pass_context=True)
-    async def remove(self, ctx, channel: discord.Channel=None):
+    async def remove(self, ctx, channel: discord.Channel):
         """Remove channel from daily reset."""
         server = ctx.message.server
         if self.settings[server.id]:
@@ -125,7 +125,7 @@ class Daily:
         dataIO.save_json(self.file_path, self.settings)
 
     @daily.command(pass_context=True)
-    async def mute(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
+    async def mute(self, ctx, channel: discord.Channel, member: discord.Member):
         """Member will be muted indefinately."""
         server = ctx.message.server
         if self.settings[server.id]:
@@ -140,7 +140,7 @@ class Daily:
                     dataIO.save_json(self.file_path, self.settings)
 
     @daily.command(pass_context=True)
-    async def unmute(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
+    async def unmute(self, ctx, channel: discord.Channel, member: discord.Member):
         """Member will be able to chat again at the daily reset."""
         server = ctx.message.server
         if self.settings[server.id]:
@@ -152,7 +152,7 @@ class Daily:
                     dataIO.save_json(self.file_path, self.settings)
 
     @daily.command(pass_context=True)
-    async def ignore(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
+    async def ignore(self, ctx, channel: discord.Channel, member: discord.Member):
         """Member will be able to talk without being restricted."""
         server = ctx.message.server
         if self.settings[server.id]:
@@ -167,7 +167,7 @@ class Daily:
                     dataIO.save_json(self.file_path, self.settings)
 
     @daily.command(pass_context=True)
-    async def unignore(self, ctx, channel: discord.Channel=None, member: discord.Member=None):
+    async def unignore(self, ctx, channel: discord.Channel, member: discord.Member):
         """Member will be removed from the un-restricted list."""
         server = ctx.message.server
         if self.settings[server.id]:
