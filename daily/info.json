@@ -1,0 +1,17 @@
+{
+    "type" : "COG",
+    "author" : [
+        "spAnser"
+    ],
+    "name" : "Daily",
+    "short" : "Daily slowmode!",
+    "description" : "A slowmode that resets everyone's permissions at midnight server time every day.",
+    "permissions" : [
+        "manage_channels",
+        "manage_roles"
+    ],
+    "tags" : [
+        "daily",
+        "slowmode"
+    ]
+}
