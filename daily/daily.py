@@ -5,6 +5,7 @@ import contextlib
 
 # Discord / Red Bot
 import discord
+import logging
 from redbot.core import checks, commands, Config
 
 # Only used for typing
@@ -12,6 +13,7 @@ from typing import cast
 from redbot.core.bot import Red
 from redbot.core.utils.chat_formatting import humanize_timedelta
 
+log = logging.getLogger("spAnser.daily")
 
 def seconds_until_midnight():
     """Get the number of seconds until midnight."""
@@ -132,13 +134,14 @@ class Daily(commands.Cog):
                         for member_id in muted:
                             member: discord.Member = self.bot.get_user(member_id)
                             if member:
-                                if len(description) + len(muted_text) < 1950:
+                                if len(description) + len(muted_text) < 1975:
                                     mutedCount = mutedCount - 1
                                     if not muted_text == "":
                                         muted_text += ", "
                                     muted_text += member.mention
                                 else:
-                                    muted_text += "+ {:,} more".format(mutedCount)
+                                    muted_text += "+{:,} more".format(mutedCount)
+                                    break
 
                     if muted_text:
                         description += "\nMuted: " + muted_text
