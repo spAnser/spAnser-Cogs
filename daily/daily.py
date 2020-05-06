@@ -106,15 +106,17 @@ class Daily(commands.Cog):
                         for role_id in ignored_roles:
                             guild: discord.Guild = ctx.guild
                             role: discord.Role = guild.get_role(role_id)
-                            if not ignored_text == "":
-                                ignored_text += ", "
-                            ignored_text += role.mention
+                            if role:
+                                if not ignored_text == "":
+                                    ignored_text += ", "
+                                ignored_text += role.mention
                     async with self.settings.channel(channel).ignored() as ignored:
                         for member_id in ignored:
                             member: discord.Member = self.bot.get_user(member_id)
-                            if not ignored_text == "":
-                                ignored_text += ", "
-                            ignored_text += member.mention
+                            if member:
+                                if not ignored_text == "":
+                                    ignored_text += ", "
+                                ignored_text += member.mention
 
                     muted_text = ""
                     async with self.settings.channel(channel).muted() as muted:
@@ -132,7 +134,7 @@ class Daily(commands.Cog):
 
                     grace = await self.settings.channel(channel).grace()
 
-                    embed.description += "\n\nChannel: " + channel.mention
+                    embed.description = "Channel: " + channel.mention
                     if grace > 0:
                         embed.description += "\nGrace Time: " + humanize_timedelta(seconds=grace)
                     if ignored_text:
