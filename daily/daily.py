@@ -142,7 +142,7 @@ class Daily(commands.Cog):
                     if muted_text:
                         embed.description += "\nMuted: " + muted_text
 
-            await ctx.send(embed=embed)
+                    await ctx.send(embed=embed)
 
     @daily.command()
     @commands.guild_only()
