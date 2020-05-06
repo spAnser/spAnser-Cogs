@@ -121,14 +121,14 @@ class Daily(commands.Cog):
                         mutedCount = len(muted)
                         for member_id in muted:
                             member: discord.Member = self.bot.get_user(member_id)
-                            if len(embed.description) < 2000:
-                                mutedCount = mutedCount - 1
-                                if not muted_text == "":
-                                    muted_text += ", "
-                                muted_text += member.mention
-                            else:
-                                muted_text += "+ {:,} more".format(mutedCount)
-                            
+                            if member:
+                                if len(embed.description) < 2000:
+                                    mutedCount = mutedCount - 1
+                                    if not muted_text == "":
+                                        muted_text += ", "
+                                    muted_text += member.mention
+                                else:
+                                    muted_text += "+ {:,} more".format(mutedCount)
 
                     grace = await self.settings.channel(channel).grace()
 
