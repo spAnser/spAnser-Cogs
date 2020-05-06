@@ -92,10 +92,13 @@ class Daily(commands.Cog):
             embed = discord.Embed(color=(await ctx.embed_colour()))
             embed.title = "Channels Resetting Daily"
             embed.description = "Reset In: " + humanize_timedelta(seconds=seconds_until_midnight())
+            await ctx.send(embed=embed)
             async with self.settings.guild(ctx.guild).channels() as channels:
                 if len(channels) == 0:
                     return
                 for channel_id in channels:
+                    embed = discord.Embed(color=(await ctx.embed_colour()))
+                    embed.title = "Channel Info"
                     channel: discord.TextChannel = self.bot.get_channel(channel_id)
 
                     ignored_text = ""
@@ -115,11 +118,17 @@ class Daily(commands.Cog):
 
                     muted_text = ""
                     async with self.settings.channel(channel).muted() as muted:
+                        mutedCount = len(muted)
                         for member_id in muted:
                             member: discord.Member = self.bot.get_user(member_id)
-                            if not muted_text == "":
-                                muted_text += ", "
-                            muted_text += member.mention
+                            if len(embed.description) < 2000:
+                                mutedCount = mutedCount - 1
+                                if not muted_text == "":
+                                    muted_text += ", "
+                                muted_text += member.mention
+                            else:
+                                muted_text += "+ {:,} more".format(mutedCount)
+                            
 
                     grace = await self.settings.channel(channel).grace()
 
