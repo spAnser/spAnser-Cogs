@@ -101,10 +101,10 @@ class Daily(commands.Cog):
                     embed.title = "Channel Info"
                     channel: discord.TextChannel = self.bot.get_channel(channel_id)
 
-                    embed.description = "Channel: " + channel.mention
+                    description = "Channel: " + channel.mention
                     grace = await self.settings.channel(channel).grace()
                     if grace > 0:
-                        embed.description += "\nGrace Time: " + humanize_timedelta(seconds=grace)
+                        description += "\nGrace Time: " + humanize_timedelta(seconds=grace)
 
                     ignored_text = ""
                     async with self.settings.channel(channel).ignored_roles() as ignored_roles:
@@ -124,7 +124,7 @@ class Daily(commands.Cog):
                                 ignored_text += member.mention
 
                     if ignored_text:
-                        embed.description += "\nIgnoring: " + ignored_text
+                        description += "\nIgnoring: " + ignored_text
 
                     muted_text = ""
                     async with self.settings.channel(channel).muted() as muted:
@@ -132,7 +132,7 @@ class Daily(commands.Cog):
                         for member_id in muted:
                             member: discord.Member = self.bot.get_user(member_id)
                             if member:
-                                if len(embed.description) + len(muted_text) < 2000:
+                                if len(description) + len(muted_text) < 1950:
                                     mutedCount = mutedCount - 1
                                     if not muted_text == "":
                                         muted_text += ", "
@@ -141,7 +141,9 @@ class Daily(commands.Cog):
                                     muted_text += "+ {:,} more".format(mutedCount)
 
                     if muted_text:
-                        embed.description += "\nMuted: " + muted_text
+                        description += "\nMuted: " + muted_text
+
+                    embed.description = description
 
                     await ctx.send(embed=embed)
 
